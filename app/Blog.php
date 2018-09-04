@@ -15,4 +15,9 @@ class Blog extends Model
     	$blogs = DB::table('blogs')->get();
     	return $blogs;
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

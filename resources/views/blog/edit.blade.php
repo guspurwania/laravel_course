@@ -16,6 +16,16 @@
                 <div class="card-header">Edit Data Blog</div>
 
                 <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    
                     {{ Form::open(['method'=>'PUT', 'route' => ['blog.update', $blog->id]]) }}
                     <div class="form-group">
                         <div class="label">Title</div>

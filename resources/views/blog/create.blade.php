@@ -16,10 +16,24 @@
                 <div class="card-header">Tambah Data Blog</div>
 
                 <div class="card-body">
-                    {{ Form::open(['method'=>'POST', 'route' => 'blog.store']) }}
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    {{ Form::open(['method'=>'POST', 'route' => 'blog.store', 'files'=>true]) }}
                     <div class="form-group">
                         <div class="label">Title</div>
                         {{ Form::text('title') }}
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Image</div>
+                        {{ Form::file('image') }}
                     </div>
                     <div class="form-group">
                         <div class="label">Content</div>

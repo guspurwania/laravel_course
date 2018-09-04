@@ -24,6 +24,7 @@
                     <table class="table" id="myTable">
                         <thead>
                             <tr>
+                                <td>Created By</td>
                                 <td>Title</td>
                                 <td>Content</td>
                                 <td>Action</td>
@@ -32,6 +33,7 @@
                         <tbody>
                             @foreach($blogs as $blog)
                                 <tr>
+                                    <td>{{ $blog->user->name }}</td>
                                     <td>{{ $blog->title }}</td>
                                     <td>{{ $blog->content }}</td>
                                     <td>

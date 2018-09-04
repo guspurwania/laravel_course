@@ -17,6 +17,8 @@
 
                 <div class="card-body">
                     <h3>{{ $blog->title }}</h3>
+                    <small>Created By : {{ $blog->user->name }} | Date : {{ date('d M Y h:i:s', strtotime($blog->created_at)) }}</small><br />
+                    <img src="{{ Storage::url('blog/' . $blog->image) }}">
                     <p>{{ $blog->content }}</p>
                 </div>
             </div>

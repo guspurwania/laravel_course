@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Blog;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -14,7 +17,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::with('user')->get();
         //dd($blogs);
         return view('blog/index', [
             'blogs' => $blogs,
@@ -40,12 +43,34 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'title' => 'required|unique:blogs|max:255',
+            'content' => 'required',
+        ]);
         $blog = new Blog;
         $blog->title = $request->title;
         $blog->content = $request->content;
+        $blog->user_id = Auth::user()->id;
+
+        $image_name = $this->savePhoto($request->image);
+        $blog->image = $image_name;
+
         $blog->save();
 
         return redirect()->route('blog.index');
+    }
+
+    private static function savePhoto($image)
+    {
+        $pic_name = "no_pic.jpg"; 
+        if (!empty($image)) {
+            $pic_name = str_replace([" ", "."], ["-", ""], microtime(true)).'-'.str_replace(" ", "-", $image->getClientOriginalName());
+            $path = $image->storeAs(
+                'blog', $pic_name
+            );
+            Storage::url($path);
+        }
+        return $pic_name;
     }
 
     /**
@@ -56,7 +81,7 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        $blog = Blog::find($id);
+        $blog = Blog::with('user')->find($id);
 
         return view('blog/show', [
             'blog' => $blog
@@ -87,6 +112,11 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
+
         $blog = Blog::find($id);
         $blog->title = $request->title;
         $blog->content = $request->content;
