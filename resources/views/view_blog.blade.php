@@ -78,20 +78,25 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Hello World! PAGI
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+            <div id="content" class="content">
+                
             </div>
         </div>
     </body>
 </html>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+ <script type="text/javascript">
+ 	$.ajax({
+	  url: "{{ url('/') }}/api/v1/blogs"
+	}).done(function(blogs) {
+		console.log(blogs);
+		$.each(blogs.data, function(key, value){
+			$('#content').append('<h3>'+ value.title +'</h3><br /><img src="{{ url("/storage/blog/") }}/'+ value.image +'" /><p>'+ value.content +'</p>')
+		});
+	});
+ </script>

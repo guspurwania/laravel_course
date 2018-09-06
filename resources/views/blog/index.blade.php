@@ -35,7 +35,7 @@
                                 <tr>
                                     <td>{{ $blog->user->name }}</td>
                                     <td>{{ $blog->title }}</td>
-                                    <td>{{ $blog->content }}</td>
+                                    <td>{{ substr($blog->content, 0, 20) }}...</td>
                                     <td>
                                         {{ Form::open(['method' => 'DELETE', 'route' => ['blog.destroy', $blog->id], 'class'=>'form-inline']) }}
 

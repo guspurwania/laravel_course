@@ -19,6 +19,10 @@ Route::get('/home', function () {
     return view('home');
 });
 
+Route::get('/view-blogs', function(){
+	return view('view_blog');
+});
+
 Route::get('/profile/{name}', function ($name) {
     echo "<h1>".$name."</h1>";
 });
