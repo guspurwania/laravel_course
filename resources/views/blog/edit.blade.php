@@ -26,10 +26,18 @@
                         </div>
                     @endif
                     
-                    {{ Form::open(['method'=>'PUT', 'route' => ['blog.update', $blog->id]]) }}
+                    {{ Form::open(['method'=>'PUT', 'route' => ['blog.update', $blog->id], 'files'=>true]) }}
+                    <div class="form-group">
+                        <div class="label">Category</div>
+                        {{ Form::select('category_id', $categories, ['class'=>'form-control']) }}
+                    </div>
                     <div class="form-group">
                         <div class="label">Title</div>
                         {{ Form::text('title', $blog->title) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Image</div>
+                        {{ Form::file('image') }}
                     </div>
                     <div class="form-group">
                         <div class="label">Content</div>

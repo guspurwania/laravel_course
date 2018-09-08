@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Blog;
 use App\User;
+use App\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +18,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::with('user')->get();
+        $blogs = Blog::with(['user', 'category'])->get();
         //dd($blogs);
         return view('blog/index', [
             'blogs' => $blogs,
@@ -32,7 +33,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('blog/create');
+        $categories = Category::pluck('name', 'id');
+        return view('blog/create', ['categories' => $categories]);
     }
 
     /**
@@ -50,6 +52,7 @@ class BlogController extends Controller
         $blog = new Blog;
         $blog->title = $request->title;
         $blog->content = $request->content;
+        $blog->category_id = $request->category_id;
         $blog->user_id = Auth::user()->id;
 
         $image_name = $this->savePhoto($request->image);
@@ -97,9 +100,11 @@ class BlogController extends Controller
     public function edit($id)
     {
         $blog = Blog::find($id);
+        $categories = Category::pluck('name', 'id');
 
         return view('blog/edit', [
-            'blog' => $blog
+            'blog' => $blog,
+            'categories' => $categories
         ]);
     }
 
@@ -120,6 +125,15 @@ class BlogController extends Controller
         $blog = Blog::find($id);
         $blog->title = $request->title;
         $blog->content = $request->content;
+        $blog->category_id = $request->category_id;
+
+        if(!empty($request->image))
+        {
+            Storage::delete('blog/'.$blog->image);
+            $image_name = $this->savePhoto($request->image);
+            $blog->image = $image_name;
+        }
+
         $blog->save();
 
         return redirect()->route('blog.index');

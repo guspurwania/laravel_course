@@ -25,6 +25,7 @@
                         <thead>
                             <tr>
                                 <td>Created By</td>
+                                <td>Category</td>
                                 <td>Title</td>
                                 <td>Content</td>
                                 <td>Action</td>
@@ -34,6 +35,7 @@
                             @foreach($blogs as $blog)
                                 <tr>
                                     <td>{{ $blog->user->name }}</td>
+                                    <td>{{ $blog->category->name }}</td>
                                     <td>{{ $blog->title }}</td>
                                     <td>{{ substr($blog->content, 0, 20) }}...</td>
                                     <td>

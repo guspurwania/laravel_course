@@ -28,6 +28,10 @@
 
                     {{ Form::open(['method'=>'POST', 'route' => 'blog.store', 'files'=>true]) }}
                     <div class="form-group">
+                        <div class="label">Category</div>
+                        {{ Form::select('category_id', $categories, ['class'=>'form-control']) }}
+                    </div>
+                    <div class="form-group">
                         <div class="label">Title</div>
                         {{ Form::text('title') }}
                     </div>
